@@ -18,7 +18,7 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        let map, userMarker, transportistaMarker;
+        let map, userMarker;
 
         // Función para inicializar el mapa
         function initMap() {
@@ -27,7 +27,7 @@
             // Cargar mapa de OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-            // Crear los íconos
+            // Crear el ícono para el usuario
             const userIcon = L.icon({
                 iconUrl: 'usuario.png', // Ruta de tu ícono de usuario
                 iconSize: [40, 40],  // Tamaño del ícono
@@ -35,6 +35,7 @@
                 popupAnchor: [0, -20]  // Ajuste del popup
             });
 
+            // Crear los íconos para el transportista
             const transportistaIcon = L.icon({
                 iconUrl: 'camion.png', // Ruta de tu ícono de camión
                 iconSize: [40, 40],  // Tamaño del ícono
@@ -56,15 +57,28 @@
                 });
             }
 
-            // Obtener la ubicación del transportista desde localStorage
-            const transportistaLocation = JSON.parse(localStorage.getItem('transportistaLocation'));
+            // Cargar la ubicación de los transportistas desde el archivo JSON
+            fetch('transportistas.json')  // Verifica que el archivo JSON sea accesible desde tu servidor
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        alert('No se han encontrado transportistas.');
+                    } else {
+                        // Colocar los transportistas en el mapa
+                        data.forEach(transportista => {
+                            const transportistaLocation = [transportista.lat, transportista.lng];
 
-            if (transportistaLocation) {
-                // Colocar el marcador del transportista
-                transportistaMarker = L.marker(transportistaLocation, { icon: transportistaIcon }).addTo(map)
-                    .bindPopup("Transportista")
-                    .openPopup();
-            }
+                            // Colocar el marcador del transportista en el mapa
+                            L.marker(transportistaLocation, { icon: transportistaIcon }).addTo(map)
+                                .bindPopup("Transportista")
+                                .openPopup();
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar el archivo de transportistas:', error);
+                    alert('Hubo un problema al cargar los transportistas.');
+                });
         }
 
         window.onload = initMap;  // Inicializar el mapa cuando la página se carga
