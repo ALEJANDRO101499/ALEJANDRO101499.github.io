@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona tu Rol</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        .button {
+            margin: 10px;
+            padding: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            width: 200px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button-transportista {
+            background-color: #ffcc00;
+        }
+        .button-usuario {
+            background-color: #0099ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¿Eres un Transportista o Usuario?</h1>
+        <button class="button button-transportista" onclick="redirectTo('transportista')">Soy Transportista</button>
+        <button class="button button-usuario" onclick="redirectTo('usuario')">Soy Usuario</button>
+    </div>
+
+    <script>
+        function redirectTo(role) {
+            if (role === 'transportista') {
+                window.location.href = 'transportista.html';  // Página para el transportista
+            } else if (role === 'usuario') {
+                window.location.href = 'usuario.html';  // Página para el usuario
+            }
+        }
+    </script>
+</body>
+</html>
