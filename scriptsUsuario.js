@@ -25,15 +25,19 @@ if (navigator.geolocation) {
     alert("Geolocalización no soportada por este navegador.");
 }
 
-// Simulación de los transportistas (en un caso real, estos datos provendrían de una base de datos o API)
-var transportistas = [
-    { lat: 19.432200, lon: -99.133500, nombre: 'Transportista 1' },
-    { lat: 19.435000, lon: -99.130000, nombre: 'Transportista 2' }
-];
+// Función para mostrar la ubicación del transportista
+function mostrarTransportista() {
+    var transportistaLat = localStorage.getItem('transportistaLat');
+    var transportistaLon = localStorage.getItem('transportistaLon');
+    
+    if (transportistaLat && transportistaLon) {
+        // Si existen las coordenadas del transportista en el LocalStorage
+        L.marker([transportistaLat, transportistaLon])
+            .addTo(map)
+            .bindPopup('Transportista')
+            .openPopup();
+    }
+}
 
-// Agregar los transportistas al mapa
-transportistas.forEach(function(transportista) {
-    L.marker([transportista.lat, transportista.lon])
-        .addTo(map)
-        .bindPopup(transportista.nombre);
-});
+// Llamar a la función para mostrar al transportista
+mostrarTransportista();

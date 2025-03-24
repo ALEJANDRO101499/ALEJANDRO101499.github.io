@@ -25,6 +25,10 @@ if (navigator.geolocation) {
             transportistaMarker.setLatLng([lat, lon]);
         }
 
+        // Guardar la ubicación del transportista en el LocalStorage
+        localStorage.setItem('transportistaLat', lat);
+        localStorage.setItem('transportistaLon', lon);
+
         // Centrar el mapa en la ubicación del transportista
         map.setView([lat, lon], 13);
     });
