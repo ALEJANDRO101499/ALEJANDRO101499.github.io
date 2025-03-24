@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario - Ver Transporte Cercano</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <h1>Usuario - Ver Transporte Cercano</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        let map;
+
+        function initMap() {
+            map = L.map('map').setView([37.7749, -122.4194], 14); // Posición inicial en San Francisco
+
+            // Cargar mapa de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Crear un ícono personalizado para el usuario
+            const userIcon = L.icon({
+                iconUrl: 'usuario.png',  // Ruta de tu imagen de usuario (cambia la ruta si es necesario)
+                iconSize: [40, 40],             // Tamaño del ícono
+                iconAnchor: [20, 20],           // Punto de anclaje del ícono (centro)
+                popupAnchor: [0, -20]           // Ajuste del popup
+            });
+
+            // Obtener la ubicación del usuario
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLocation = [position.coords.latitude, position.coords.longitude];
+                    // Colocar el marcador del usuario con el ícono personalizado
+                    L.marker(userLocation, { icon: userIcon }).addTo(map)
+                        .bindPopup("Tu ubicación")
+                        .openPopup();
+                    map.setView(userLocation, 14);  // Ajustar el zoom y centrar el mapa en la ubicación del usuario
+                });
+            }
+        }
+
+        window.onload = initMap;  // Iniciar el mapa cuando se carga la página
+    </script>
+</body>
+</html>

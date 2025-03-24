@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportista - Compartir Ubicación</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transportista - Comparte tu ubicación</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        let map, transportistaMarker;
+
+        function initMap() {
+            map = L.map('map').setView([37.7749, -122.4194], 14); // San Francisco
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Crear el ícono para el transportista (camión)
+            const truckIcon = L.icon({
+                iconUrl: 'camion.png', // Ruta de tu imagen de camión
+                iconSize: [40, 40], 
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -20]
+            });
+
+            // Obtener la ubicación del transportista
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const transportistaLocation = [position.coords.latitude, position.coords.longitude];
+                    transportistaMarker = L.marker(transportistaLocation, {icon: truckIcon}).addTo(map)
+                        .bindPopup("Tu ubicación como transportista")
+                        .openPopup();
+                    map.setView(transportistaLocation, 14);
+                });
+            }
+        }
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>
