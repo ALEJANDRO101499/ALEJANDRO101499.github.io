@@ -6,6 +6,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+// Crear un icono personalizado para el transportista
+var camionIcon = L.icon({
+    iconUrl: 'camion.png',  // Ruta de la imagen
+    iconSize: [50, 50],            // Tamaño del icono
+    iconAnchor: [25, 50],          // Anclaje del icono, donde se coloca el marcador
+    popupAnchor: [0, -50]          // Posición del popup respecto al icono
+});
+
 // Obtener la ubicación actual del usuario
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -32,7 +40,7 @@ function mostrarTransportista() {
     
     if (transportistaLat && transportistaLon) {
         // Si existen las coordenadas del transportista en el LocalStorage
-        L.marker([transportistaLat, transportistaLon])
+        L.marker([transportistaLat, transportistaLon], { icon: camionIcon })
             .addTo(map)
             .bindPopup('Transportista')
             .openPopup();
