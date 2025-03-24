@@ -13,39 +13,47 @@
     </style>
 </head>
 <body>
-    <h1>Transportista - Comparte tu ubicación</h1>
+    <h1>Transportista - Compartir Ubicación</h1>
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         let map, transportistaMarker;
 
+        // Función para inicializar el mapa
         function initMap() {
-            map = L.map('map').setView([37.7749, -122.4194], 14); // San Francisco
+            map = L.map('map').setView([37.7749, -122.4194], 14);  // Posición inicial
 
+            // Cargar mapa de OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-            // Crear el ícono para el transportista (camión)
-            const truckIcon = L.icon({
-                iconUrl: 'camion.png', // Ruta de tu imagen de camión
-                iconSize: [40, 40], 
-                iconAnchor: [20, 20],
-                popupAnchor: [0, -20]
+            // Crear el ícono para el transportista
+            const transportistaIcon = L.icon({
+                iconUrl: 'camion.png', // Ruta de tu ícono de camión
+                iconSize: [40, 40],  // Tamaño del ícono
+                iconAnchor: [20, 20], // Punto de anclaje del ícono
+                popupAnchor: [0, -20]  // Ajuste del popup
             });
 
             // Obtener la ubicación del transportista
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
                     const transportistaLocation = [position.coords.latitude, position.coords.longitude];
-                    transportistaMarker = L.marker(transportistaLocation, {icon: truckIcon}).addTo(map)
-                        .bindPopup("Tu ubicación como transportista")
+
+                    // Almacenar la ubicación del transportista en localStorage
+                    localStorage.setItem('transportistaLocation', JSON.stringify(transportistaLocation));
+
+                    // Colocar el marcador del transportista
+                    transportistaMarker = L.marker(transportistaLocation, { icon: transportistaIcon }).addTo(map)
+                        .bindPopup("Transportista")
                         .openPopup();
-                    map.setView(transportistaLocation, 14);
+
+                    map.setView(transportistaLocation, 14);  // Centrar el mapa en la ubicación del transportista
                 });
             }
         }
 
-        window.onload = initMap;
+        window.onload = initMap;  // Inicializar el mapa cuando la página se carga
     </script>
 </body>
 </html>

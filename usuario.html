@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuario - Ver Transporte Cercano</title>
+    <title>Usuario - Ver Transportistas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -13,41 +13,61 @@
     </style>
 </head>
 <body>
-    <h1>Usuario - Ver Transporte Cercano</h1>
+    <h1>Usuario - Ver Transportistas en el Mapa</h1>
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        let map;
+        let map, userMarker, transportistaMarker;
 
+        // Función para inicializar el mapa
         function initMap() {
-            map = L.map('map').setView([37.7749, -122.4194], 14); // Posición inicial en San Francisco
+            map = L.map('map').setView([37.7749, -122.4194], 14);  // Posición inicial
 
             // Cargar mapa de OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-            // Crear un ícono personalizado para el usuario
+            // Crear los íconos
             const userIcon = L.icon({
-                iconUrl: 'usuario.png',  // Ruta de tu imagen de usuario (cambia la ruta si es necesario)
-                iconSize: [40, 40],             // Tamaño del ícono
-                iconAnchor: [20, 20],           // Punto de anclaje del ícono (centro)
-                popupAnchor: [0, -20]           // Ajuste del popup
+                iconUrl: 'usuario.png', // Ruta de tu ícono de usuario
+                iconSize: [40, 40],  // Tamaño del ícono
+                iconAnchor: [20, 20], // Punto de anclaje del ícono
+                popupAnchor: [0, -20]  // Ajuste del popup
+            });
+
+            const transportistaIcon = L.icon({
+                iconUrl: 'camion.png', // Ruta de tu ícono de camión
+                iconSize: [40, 40],  // Tamaño del ícono
+                iconAnchor: [20, 20], // Punto de anclaje del ícono
+                popupAnchor: [0, -20]  // Ajuste del popup
             });
 
             // Obtener la ubicación del usuario
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
                     const userLocation = [position.coords.latitude, position.coords.longitude];
-                    // Colocar el marcador del usuario con el ícono personalizado
-                    L.marker(userLocation, { icon: userIcon }).addTo(map)
+
+                    // Colocar el marcador del usuario
+                    userMarker = L.marker(userLocation, { icon: userIcon }).addTo(map)
                         .bindPopup("Tu ubicación")
                         .openPopup();
-                    map.setView(userLocation, 14);  // Ajustar el zoom y centrar el mapa en la ubicación del usuario
+
+                    map.setView(userLocation, 14);  // Centrar el mapa en la ubicación del usuario
                 });
+            }
+
+            // Obtener la ubicación del transportista desde localStorage
+            const transportistaLocation = JSON.parse(localStorage.getItem('transportistaLocation'));
+
+            if (transportistaLocation) {
+                // Colocar el marcador del transportista
+                transportistaMarker = L.marker(transportistaLocation, { icon: transportistaIcon }).addTo(map)
+                    .bindPopup("Transportista")
+                    .openPopup();
             }
         }
 
-        window.onload = initMap;  // Iniciar el mapa cuando se carga la página
+        window.onload = initMap;  // Inicializar el mapa cuando la página se carga
     </script>
 </body>
 </html>
