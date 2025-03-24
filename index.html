@@ -3,50 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rastreador de Transporte Público</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            text-align: center;
-        }
-        h1 {
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .button {
-            padding: 15px 30px;
-            margin: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-        .button:active {
-            background-color: #3e8e41;
-        }
-    </style>
+    <title>Seleccionar Perfil</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido al Rastreador de Transporte Público</h1>
-        <p>¿Eres un usuario o un transportista?</p>
-        <div>
-            <button class="button" onclick="window.location.href='usuario.html'">Soy Usuario</button>
-            <button class="button" onclick="window.location.href='transportista.html'">Soy Transportista</button>
+        <h2>Selecciona tu perfil</h2>
+        <div class="button-container">
+            <button class="perfil-button" onclick="seleccionarPerfil('usuario')">Soy Usuario</button>
+            <button class="perfil-button" onclick="seleccionarPerfil('transportista')">Soy Transportista</button>
         </div>
     </div>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
+
